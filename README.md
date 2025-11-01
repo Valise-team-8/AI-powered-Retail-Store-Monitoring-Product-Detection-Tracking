@@ -1,3 +1,5 @@
+link for model weights: https://drive.google.com/drive/folders/1nN4vY2iFZDV_bVueL53nr4IUbqd4LSCj?dmr=1&ec=wgc-drive-globalnav-goto
+
 # AI-Powered Retail Store Monitoring
 
 This project implements real-time object detection for retail store monitoring using YOLOv8 computer vision models. It can detect various retail items and people in a live video feed from a webcam.
@@ -84,5 +86,6 @@ A window will open showing the live feed with detected objects and counts.
 - **Low detection accuracy**: Increase confidence threshold or use a larger model (yolov8m.pt)
 
 ## License
+
 
 This project uses YOLOv8 models from Ultralytics. Please refer to their licensing terms.
