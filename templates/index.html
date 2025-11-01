@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Object Detection Monitor</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            font-family: "Orbitron", sans-serif;
+            background: #030712;
+            color: #0ff;
+            overflow-x: hidden;
+        }
+
+        .hud-border {
+            border: 2px solid rgba(0,255,255,0.4);
+            box-shadow: 0 0 15px #0ff;
+            border-radius: 8px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        #video-feed { width: 68%; }
+        #video-box {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: black;
+        }
+
+        .panel {
+            width: 30%;
+            padding: 15px;
+        }
+
+        h2 {
+            text-align: center;
+            text-shadow: 0 0 10px #0ff;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 5px 10px;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(0,255,255,0.3);
+        }
+
+        li:hover {
+            background: rgba(0,255,255,0.15);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- Live Video Feed -->
+    <div id="video-feed" class="hud-border">
+        <h2>REAL-TIME AI VISION</h2>
+        <img id="video-box" src="/video" class="hud-border" alt="REAL-TIME AI VISION" />
+    </div>
+
+    <!-- Detected Objects Panel -->
+    <div class="panel hud-border">
+        <h2>DETECTED OBJECTS</h2>
+        <ul id="objects">
+            <li>Waiting for objects...</li>
+        </ul>
+    </div>
+
+</div>
+
+<!-- Fetch Detected Objects -->
+<script>
+async function fetchObjects() {
+    try {
+        const res = await fetch('/stats');
+        const data = await res.json();
+
+        const list = document.getElementById("objects");
+        list.innerHTML = "";
+
+        if (Object.keys(data).length === 0) {
+            list.innerHTML = "<li>No objects detected</li>";
+        } else {
+            for (const [obj, count] of Object.entries(data)) {
+                const item = document.createElement("li");
+                item.textContent = `${obj} : ${count}`;
+                list.appendChild(item);
+            }
+        }
+    }
+    catch (err) {
+        console.error(err);
+        document.getElementById("objects").innerHTML = "<li>Error loading data...</li>";
+    }
+
+    setTimeout(fetchObjects, 500);
+}
+
+fetchObjects();
+</script>
+
+</body>
+</html>
